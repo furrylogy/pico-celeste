@@ -1,0 +1,9 @@
+description: libfixmath - cross platform fixed point maths library
+targets:
+- esp32
+- esp32s2
+- esp32s3
+- esp32p4
+- esp32c3
+dependencies:
+  idf: '>=4.4'

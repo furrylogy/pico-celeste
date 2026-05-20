@@ -1,0 +1,89 @@
+init_object 提供实例化
+- 包含的是每个obj共有的方法/属性
+- 我们提供一个obj_t 作为模拟基类的实现
+
+被实例化的都有：
+直接调用: 在触发事件时生成
+- smoke
+- player
+- lifeup
+- fruit
+- orb
+- platform
+- room_title
+间接调用：foreach(types) 在地图创建时统一生成
+types记录的：
+- player_spawn
+- spring
+- balloon
+- fall_floor
+- fruit
+- fly_fruit
+- fake_wall
+- key
+- chest
+- message
+- big_chest
+- flag
+
+上述所有的**模板 类型全应为type_t
+实例化后才为 xxx_t
+结构
+xxx_t 0
+    obj_t 0
+        type* 0 --> tile;init ...
+        collideable 1
+        ... sizeof(obj_t)
+    val sizeof(obj_t)+1
+    val sizeof(obj_t)+2
+    ...
+
+init时，立即将obj加入列表尾部
+destroy时，先标记为valid=0
+在update的过程中进行移除
+
+维护两个游标，一个是正在处理的一项i，
+另一个是处理后的新列表长度new_len
+new_len始终指向当前已经处理并筛选完的对象表的后一个
+(比如当前处理了3个合法对象，那new_len=3)
+每次循环完成时，obj[new_len]一定为NULL或未处理
+每次循环跳过i==NULL的项
+如果不为NULL,先判断i项是否valid,如果不valid：
+对其进行free(),并设为NULL,此时new_len不自加
+如果valid：执行obj->type->update(obj);
+接着不管处理完成后它的valid如何，都将它搬到obj[new_len]处
+（如果i==new_len 说明前面全是合法的，不需要搬）
+最后将len设为新得到的new_len
+这样每次只需要遍历一次表，就能实现全update
+并free需要destroy的项，同时获得重新排好从0-(len-1)都非空的对象表
+
+typedef struct TEMPLATE_s{
+    obj_t obj;
+
+
+}TEMPLATE_t;
+
+void TEMPLATE_init(obj_t* obj);
+void TEMPLATE_update(obj_t* obj);
+void TEMPLATE_draw(obj_t* obj);
+
+void TEMPLATE_init(obj_t* obj)
+{
+    TEMPLATE_t* this = (TEMPLATE_t*)obj;
+}
+void TEMPLATE_update(obj_t* obj)
+{
+    TEMPLATE_t* this = (TEMPLATE_t*)obj;
+}
+void TEMPLATE_draw(obj_t* obj)
+{
+    TEMPLATE_t* this = (TEMPLATE_t*)obj;
+}
+type_t TEMPLATE = {
+    0,
+    0,
+    sizeof(TEMPLATE_t),
+    TEMPLATE_init,
+    TEMPLATE_update,
+    TEMPLATE_draw
+};
