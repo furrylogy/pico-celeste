@@ -1792,7 +1792,7 @@ void _draw()
         if(p->alive)
         {
             p->x=fix16_add(p->x,p->spd.x);
-            p->y=fix16_add(p->x,p->spd.y);
+            p->y=fix16_add(p->y,p->spd.y);
             p->t=fix16_sub(p->t,F16(1));
             if(p->t<=F16(0))
             {
