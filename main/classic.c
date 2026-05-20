@@ -140,7 +140,6 @@ void player_update(obj_t* obj)
     int16_t input = btn(k_right) ? 1 : (btn(k_left) ? -1 : 0);
 
     player_t* this = (player_t*)obj;
-    printf("player-");
     //spikes collide
     if(spikes_at(fix16_add(obj->x,obj->hitbox.x),fix16_add(obj->y,obj->hitbox.y),obj->hitbox.w,obj->hitbox.h,obj->spd.x,obj->spd.y))
     {
@@ -390,7 +389,6 @@ void player_update(obj_t* obj)
 
     //was on the ground
     this->was_on_ground=on_ground;
-    printf("-player END");
 }
 void player_draw(obj_t* obj)
 {
@@ -891,6 +889,7 @@ void lifeup_init(obj_t* obj)
     obj->y=fix16_sub(obj->y,F16(4));
     this->flash=0;
     obj->solids=0;
+    printf("lifeup init\n");
 }
 void lifeup_update(obj_t* obj)
 {
@@ -1400,7 +1399,7 @@ void obj_move_y(obj_t* obj,fix16_t amount)
 }
 obj_t* init_object(type_t* type,fix16_t x,fix16_t y)
 {
-    if(type->if_not_fruit==0 && got_fruit[level_index()])
+    if(type->if_not_fruit==1 && got_fruit[level_index()])
     {
         return NULL;
     }
@@ -1796,7 +1795,7 @@ void _draw()
             {
                 p->alive=0;
             }
-            rectfill(fix16_sub(p->x,fix16_div(p->t,F16(5))),fix16_sub(p->y,fix16_div(p->t,F16(5))),fix16_add(p->x,fix16_div(p->t,F16(5))),fix16_add(p->y,fix16_div(p->t,F16(5))),fix16_add(F16(14),fix16_mod(p->t,F16(2))));
+            rectfill(fix16_sub(p->x,fix16_div(p->t,F16(5))),fix16_sub(p->y,fix16_div(p->t,F16(5))),fix16_add(p->x,fix16_div(p->t,F16(5))),fix16_add(p->y,fix16_div(p->t,F16(5))),14+fix16_to_int(p->t)%2);
         }
     }
 
@@ -1900,23 +1899,20 @@ uint8_t tile_flag_at(fix16_t x,fix16_t y,fix16_t w,fix16_t h,uint8_t flag)
 {
     for(
         int16_t i=fix16_to_int(fix16_max(F16(0),fix16_floor(fix16_div(x,F16(8))))), //max(0,flr(x/8))
-            i_end=fix16_to_int(fix16_min(F16(15),fix16_div(fix16_sub(fix16_add(x,w),F16(1)),F16(8)))),//min(15,(x+w-1)/8)
+            i_end=fix16_to_int(fix16_floor(fix16_min(F16(15),fix16_div(fix16_sub(fix16_add(x,w),F16(1)),F16(8))))),//flr(min(15,(x+w-1)/8))
             j_start=fix16_to_int(fix16_max(F16(0),fix16_floor(fix16_div(y,F16(8))))), //max(0,flr(y/8))
-            j_end=fix16_to_int(fix16_min(F16(15),fix16_div(fix16_sub(fix16_add(y,h),F16(1)),F16(8))));//min(15,(y+h-1)/8)
+            j_end=fix16_to_int(fix16_floor(fix16_min(F16(15),fix16_div(fix16_sub(fix16_add(y,h),F16(1)),F16(8)))));//flr(min(15,(y+h-1)/8))
         i<=i_end;i++
     )
     {
         for(int16_t j=j_start;j<=j_end;j++)
         {
-            printf("(%d,%d)[%u] ",i,j,tile_at(i,j));
             if(fget(tile_at(i,j),flag))
             {
-                printf("get! flag:%02x\n",(1U<<flag));
                 return 1;
             }
         }
     }
-    printf("notfound flag:%02x\n",(1U<<flag));
     return 0;
 }
 uint8_t tile_at(int16_t x,int16_t y){
@@ -1926,9 +1922,9 @@ uint8_t spikes_at(fix16_t x,fix16_t y,fix16_t w,fix16_t h,fix16_t xspd,fix16_t y
 {
     for(
         int16_t i=fix16_to_int(fix16_max(F16(0),fix16_floor(fix16_div(x,F16(8))))), //max(0,flr(x/8))
-            i_end=fix16_to_int(fix16_min(F16(15),fix16_div(fix16_sub(fix16_add(x,w),F16(1)),F16(8)))),//min(15,(x+w-1)/8)
+            i_end=fix16_to_int(fix16_floor(fix16_min(F16(15),fix16_div(fix16_sub(fix16_add(x,w),F16(1)),F16(8))))),//flr(min(15,(x+w-1)/8))
             j_start=fix16_to_int(fix16_max(F16(0),fix16_floor(fix16_div(y,F16(8))))), //max(0,flr(y/8))
-            j_end=fix16_to_int(fix16_min(F16(15),fix16_div(fix16_sub(fix16_add(y,h),F16(1)),F16(8))));//min(15,(y+h-1)/8)
+            j_end=fix16_to_int(fix16_floor(fix16_min(F16(15),fix16_div(fix16_sub(fix16_add(y,h),F16(1)),F16(8)))));//flr(min(15,(y+h-1)/8))
         i<=i_end;i++
     )
     {

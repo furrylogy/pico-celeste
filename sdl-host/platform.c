@@ -9,12 +9,12 @@ static uint8_t btn_state[6];
 void platform_update_input(void)
 {
     const uint8_t *keys = SDL_GetKeyboardState(NULL);
-    btn_state[0] = keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A];
-    btn_state[1] = keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D];
-    btn_state[2] = keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W];
-    btn_state[3] = keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S];
-    btn_state[4] = keys[SDL_SCANCODE_Z] || keys[SDL_SCANCODE_K] || keys[SDL_SCANCODE_SPACE];
-    btn_state[5] = keys[SDL_SCANCODE_X] || keys[SDL_SCANCODE_L];
+    btn_state[0] = keys[SDL_SCANCODE_LEFT];
+    btn_state[1] = keys[SDL_SCANCODE_RIGHT];
+    btn_state[2] = keys[SDL_SCANCODE_UP];
+    btn_state[3] = keys[SDL_SCANCODE_DOWN];
+    btn_state[4] = keys[SDL_SCANCODE_C];
+    btn_state[5] = keys[SDL_SCANCODE_X];
 }
 
 uint8_t btn(uint8_t b)
