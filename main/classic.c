@@ -640,7 +640,7 @@ void balloon_draw(obj_t* obj)
     balloon_t* this = (balloon_t*)obj;
     if(obj->spr==22)
     {
-        spr(13+fix16_to_int(fix16_mod(fix16_mul(this->offset,F16(8)),F16(3))),obj->x,fix16_add(obj->y,F16(6)),0,0);
+        spr(13+fix16_to_int(fix16_mul(this->offset,F16(8)))%3,obj->x,fix16_add(obj->y,F16(6)),0,0);
         spr(obj->spr,obj->x,obj->y,0,0);
     }
 }
@@ -1691,6 +1691,10 @@ void _draw()
             c=2;
         }
         else if(start_game_flash>0)
+        {
+            c=1;
+        }
+        else
         {
             c=0;
         }
