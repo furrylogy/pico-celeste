@@ -140,7 +140,7 @@ void player_update(obj_t* obj)
     int16_t input = btn(k_right) ? 1 : (btn(k_left) ? -1 : 0);
 
     player_t* this = (player_t*)obj;
-
+    printf("player-");
     //spikes collide
     if(spikes_at(fix16_add(obj->x,obj->hitbox.x),fix16_add(obj->y,obj->hitbox.y),obj->hitbox.w,obj->hitbox.h,obj->spd.x,obj->spd.y))
     {
@@ -390,6 +390,7 @@ void player_update(obj_t* obj)
 
     //was on the ground
     this->was_on_ground=on_ground;
+    printf("-player END");
 }
 void player_draw(obj_t* obj)
 {
@@ -1907,12 +1908,15 @@ uint8_t tile_flag_at(fix16_t x,fix16_t y,fix16_t w,fix16_t h,uint8_t flag)
     {
         for(int16_t j=j_start;j<=j_end;j++)
         {
+            printf("(%d,%d)[%u] ",i,j,tile_at(i,j));
             if(fget(tile_at(i,j),flag))
             {
+                printf("get! flag:%02x\n",(1U<<flag));
                 return 1;
             }
         }
     }
+    printf("notfound flag:%02x\n",(1U<<flag));
     return 0;
 }
 uint8_t tile_at(int16_t x,int16_t y){

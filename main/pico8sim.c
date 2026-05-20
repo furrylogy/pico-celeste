@@ -93,7 +93,7 @@ void p8blit_to_rgb565(uint16_t *buf)
 
 uint8_t fget(uint8_t n, uint8_t f)
 {
-    return n<sizeof(mask) && (mask[n]&(1<<f));
+    return n<sizeof(mask) && (mask[n]&(1U<<f));
 }
 void pal(uint8_t c0, uint8_t c1)
 {
