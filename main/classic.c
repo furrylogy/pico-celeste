@@ -889,7 +889,6 @@ void lifeup_init(obj_t* obj)
     obj->y=fix16_sub(obj->y,F16(4));
     this->flash=0;
     obj->solids=0;
-    printf("lifeup init\n");
 }
 void lifeup_update(obj_t* obj)
 {
