@@ -157,3 +157,9 @@ typedef struct TEMPLATE_s {
 ## 许可
 
 本项目仅供学习研究使用。Celeste 游戏版权归原作者所有。
+
+# todo
+金草莓  
+预输入  
+抓墙  
+冲刺 跳跃加速
